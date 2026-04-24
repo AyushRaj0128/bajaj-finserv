@@ -1,11 +1,15 @@
 const express = require('express');
 const cors = require('cors');
+const path = require('path');
 require('dotenv').config();
 
 const app = express();
 
 app.use(cors());
 app.use(express.json());
+
+// Serve static files from frontend directory
+app.use(express.static(path.join(__dirname, '../frontend')));
 
 // Configuration - PLEASE UPDATE THESE
 const USER_ID = "user_17042026"; // Format: fullname_ddmmyyyy
@@ -257,6 +261,11 @@ app.post('/bfhl', (req, res) => {
 
 app.get('/health', (req, res) => {
   res.json({ status: 'ok' });
+});
+
+// Serve index.html for root path
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, '../frontend/index.html'));
 });
 
 const PORT = process.env.PORT || 5000;
